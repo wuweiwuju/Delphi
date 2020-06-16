@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 982
-  Top = 235
+  Left = 575
+  Top = 244
   Width = 460
   Height = 436
   Caption = #20256#22855#24037#20316#23460
@@ -12,6 +12,7 @@ object Form1: TForm1
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Start: TButton
@@ -39,16 +40,21 @@ object Form1: TForm1
     TabOrder = 1
   end
   object ADOConnection1: TADOConnection
+    Connected = True
     ConnectionString = 
       'Provider=MSDASQL.1;Password=lovemyself;Persist Security Info=Tru' +
-      'e;User ID=root;Data Source=mysql fei;Initial Catalog=mysql'
-    Provider = 'MSDASQL.1'
+      'e;User ID=root;Data Source=mysql delphi;Initial Catalog=delphi'
+    LoginPrompt = False
+    AfterConnect = ADOConnection1AfterConnect
     Left = 88
     Top = 8
   end
   object ADOQuery1: TADOQuery
     Connection = ADOConnection1
+    CursorType = ctStatic
     Parameters = <>
+    SQL.Strings = (
+      'select *from shangpin')
     Left = 184
     Top = 8
   end
