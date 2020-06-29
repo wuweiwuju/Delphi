@@ -1,0 +1,78 @@
+object FrmAppLog: TFrmAppLog
+  Left = 258
+  Top = 155
+  AutoScroll = False
+  Caption = 'FrmAppLog'
+  ClientHeight = 453
+  ClientWidth = 688
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  PixelsPerInch = 96
+  TextHeight = 13
+  object mlog: TMemo
+    Left = 0
+    Top = 0
+    Width = 377
+    Height = 453
+    Align = alLeft
+    Lines.Strings = (
+      '')
+    ScrollBars = ssBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Button1: TButton
+    Left = 416
+    Top = 40
+    Width = 225
+    Height = 33
+    Caption = '在主线程中写入一条消息'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
+  object Memo1: TMemo
+    Left = 392
+    Top = 312
+    Width = 289
+    Height = 129
+    Color = clMenu
+    Lines.Strings = (
+      '                                       说明：'
+      '1、程序执行时会在当前目录下建立Logfile子目录并建'
+      '立为GBASXXXXXXXX.log的日志文件。XXXX部分表示'
+      '当前年月日,这个文件每天建立一个，你可以在程序'
+      '执行时改变系统时间看一下。'
+      '2、自动删除日志文件功能也可以通过多建立日志文件'
+      '测试'
+      '3、上面按钮分别给出了从主进程、其他线程写日志文'
+      '件的方法，同时也证明不会产生内存冲突。')
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 2
+  end
+  object Button2: TButton
+    Left = 416
+    Top = 88
+    Width = 225
+    Height = 33
+    Caption = '创建6个线程同时向日志写入消息'
+    TabOrder = 3
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 416
+    Top = 136
+    Width = 225
+    Height = 33
+    Caption = '释放上面的线程'
+    TabOrder = 4
+    OnClick = Button3Click
+  end
+end
