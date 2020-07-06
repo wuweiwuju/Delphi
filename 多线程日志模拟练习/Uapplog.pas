@@ -26,12 +26,12 @@ type
 
 var
   FrmAppLog: TFrmAppLog;
-  SysIniFile:TIniFile;
-  LogMgr: TLogManager;
-  TimeIntervalEvent: TlogEvent;
+  SysIniFile:TIniFile; //配置文件读取
+  LogMgr: TLogManager; //日志管理类
+  TimeIntervalEvent: TlogEvent; //事件
   NewLogAddEvent: TlogEvent;
-  Thdcheck: TThdcheck;
-  ThdLogHandler: TThdLogHandle;
+  //Thdcheck: TThdcheck;
+  ThdLogHandler: TThdLogHandle; //定义为写日志线程类的实例
   ListWriteThread:Tlist;
 implementation
 
@@ -45,30 +45,30 @@ begin
   NewLogAddEvent := TlogEvent.Create('HAS_NEW_LOG_ADDED', false);
 
   LogMgr := TLogManager.create('.\LogFiles');
-  Thdcheck:=TThdcheck.create(LogMgr);
+  //Thdcheck:=TThdcheck.create(LogMgr);
   ThdLogHandler := TThdLogHandle.create(LogMgr,mlog);
 
-  Thdcheck.Resume;
+  //Thdcheck.Resume;
   ThdLogHandler.Resume;
 
 end;
 
 procedure TFrmAppLog.Button1Click(Sender: TObject);
 begin
-LogMgr.AddLog('This is a massage from main process!');
+  LogMgr.AddLog('This is a massage from main process!');
 end;
 
 procedure TFrmAppLog.FormDestroy(Sender: TObject);
 var
 i:integer;
 begin
-  Thdcheck.Terminate;
+  //Thdcheck.Terminate;
   TimeIntervalEvent.Signal;
 
   ThdLogHandler.Terminate;
   NewLogAddEvent.Signal;
 
-  Thdcheck.Free;
+  //Thdcheck.Free;
   ThdLogHandler.Free;
 
   LogMgr.Free;

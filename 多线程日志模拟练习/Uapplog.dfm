@@ -1,7 +1,6 @@
 object FrmAppLog: TFrmAppLog
   Left = 580
   Top = 324
-  AutoScroll = False
   Caption = 'FrmAppLog'
   ClientHeight = 453
   ClientWidth = 688

@@ -22,11 +22,11 @@ end;
 {*************************}
 TLogManager = class
 private
-  FLogMsgQueue: TList;
+  FLogMsgQueue: TList; //存储等待TlogMessage的列表对象
   FLogFile: TextFile;
-  FQueueLock: TCriticalSection;
+  FQueueLock: TCriticalSection; //重要区段变量
   FFileLock: TCriticalSection;
-  FNewLogAddEvent: TlogEvent;
+  FNewLogAddEvent: TlogEvent;  //写日志同步事件
   FFileStoredDir: string;
   procedure LockQueue;
   procedure UnLockQueue;
@@ -36,13 +36,13 @@ private
 public
   constructor create(ADirName: string);
   destructor destroy; override;
-  procedure AddLog(AStr: string);
-  function HasWaitingLog:boolean;
-  function GetFirstWaitingLog: string;
+  procedure AddLog(AStr: string); //加入一条日志
+  function HasWaitingLog:boolean; //列表中有日志为true
+  function GetFirstWaitingLog: string; //得到日志列表中的第一个日志字符串
   procedure WriteLogToFile(AStr: string);
-  procedure FlushLogsToFile;
+  procedure FlushLogsToFile; //清空文件缓存
   procedure MoveToNextDay(ADate: TDateTime);
-  procedure DelPreviousLogFiles(ADate: TDateTime; ADaysAgo: integer);
+  procedure DelPreviousLogFiles(ADate: TDateTime; ADaysAgo: integer);//删除旧的日志
 end;
 
 implementation
@@ -78,6 +78,7 @@ procedure TLogManager.AddLog(AStr: string);
 begin
   LockQueue;
   try
+    //创建一条日志列表并存入列表
     FLogMsgQueue.Add(TLogMessage.Create(AStr));
   finally
     UnLockQueue;
@@ -88,15 +89,15 @@ end;
 constructor TLogManager.create(ADirName: string);
 begin
  inherited create;
-  FFileStoredDir := ADirName;
+  FFileStoredDir := ADirName;//日志文件的存储目录
 
   if not DirectoryExists(ADirName) then
     ForceDirectories(ADirName);
 
   NewFileOfCurrentDay(now);
-  FLogMsgQueue := TList.Create;
-  FQueueLock := TCriticalSection.Create;
-  FFileLock := TCriticalSection.Create;
+  FLogMsgQueue := TList.Create; //日志列表
+  FQueueLock := TCriticalSection.Create; //用于日志列表
+  FFileLock := TCriticalSection.Create; //用于文件I/O
   FNewLogAddEvent := TlogEvent.Create('HAS_NEW_LOG_ADDED', false);
   //设置访问name为'HAS_NEW_LOG_ADDED'，使用自动复位
 
